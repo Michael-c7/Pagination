@@ -59,6 +59,8 @@ a {
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
+  max-width:calc(225px * 5);
+  margin:0 auto;
 }
 
 .card {
@@ -86,6 +88,7 @@ a {
   display:flex;
   justify-content: center;
   align-items:center;
+  flex-wrap: nowrap;
   margin:3rem auto 0 auto;
   max-width:650px;
 }
@@ -96,6 +99,7 @@ a {
   align-items:center;
   width:100%;
   font-size:2rem;
+  
 }
 
 .page:first-of-type {
@@ -126,4 +130,11 @@ a {
   border:none;
   font-size: 1.5rem;
   cursor: pointer;
+}
+
+
+.red {
+  color:red;
+  background:rgb(218, 9, 9);
+  font-size:64px;
 }
