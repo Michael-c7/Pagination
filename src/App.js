@@ -7,9 +7,8 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [users, setUsers] = useState([]);
   // start : 10, end : 100
-  const [currentIndex, setCurrentIndex] = useState(10)
+  const [currentIndex, setCurrentIndex] = useState(0)
   const [isActiveBtn, setIsActiveBtn] = useState(true)
-  let [amountOfPages, setAmountOfPages] = useState([0,1,2,3,4,5,6,7,8,9])
 
 
   const fetchData = async _ => {
@@ -19,9 +18,19 @@ function App() {
       const response = await fetch(url);
       const data = await response.json()
       // console.log(data.length / 10)
-      let currentUsers = data.slice((currentIndex - 10), currentIndex);
+      //
+      // let currentUsers = data.slice((currentIndex - 10), currentIndex);
+      const itemsPerPage = 10;
+      const pages = Math.ceil(data.length / itemsPerPage);
+
+      const currentUsers = Array.from({length:pages}, (_, index) => {
+        const start = index * itemsPerPage;
+        const end = start + itemsPerPage;
+        return data.slice(start, end);
+      });
+
       setLoading(false)
-      setUsers(currentUsers)
+      setUsers(currentUsers[currentIndex])
 
     } catch(error) {
       setLoading(false)
@@ -31,18 +40,18 @@ function App() {
 
 
   const prevUsers = _ => {
-    if(currentIndex <= 10) {
-      setCurrentIndex(100)
+    if(currentIndex <= 1) {
+      setCurrentIndex(users.length -1)
     } else {
-      setCurrentIndex(currentIndex - 10)
+      setCurrentIndex(currentIndex - 1)
     }
   }
 
   const nextUsers = _ => {
-    if(currentIndex >= 100) {
-      setCurrentIndex(10)
+    if(currentIndex >= 1) {
+      setCurrentIndex(0)
     } else {
-      setCurrentIndex(currentIndex + 10)
+      setCurrentIndex(currentIndex + 1)
     }
   }
 
@@ -90,36 +99,13 @@ function App() {
       <section className="pages-section">
         <button className="pages-section__prev" onClick={prevUsers}>Prev</button>
         <ul className="pages" onClick={setCurrentPage}>
-          <li className="page">
-              <button className="page__btn" data-pagenum="10">1</button>
-            </li>
-            <li className="page">
-              <button className="page__btn" data-pagenum="20">2</button>
-            </li>
-            <li className="page">
-              <button className="page__btn" data-pagenum="30">3</button>
-            </li>
-            <li className="page">
-              <button className="page__btn" data-pagenum="40">4</button>
-            </li>
-            <li className="page">
-              <button className="page__btn" data-pagenum="50">5</button>
-            </li>
-            <li className="page">
-              <button className="page__btn" data-pagenum="60">6</button>
-            </li>
-            <li className="page">
-              <button className="page__btn" data-pagenum="70">7</button>
-            </li>
-            <li className="page">
-              <button className="page__btn" data-pagenum="80">8</button>
-            </li>
-            <li className="page">
-              <button className="page__btn" data-pagenum="90">9</button>
-            </li>
-            <li className="page">
-              <button className="page__btn" data-pagenum="100">10</button>
-            </li>
+          {users.map((_, index) => {
+            return (
+              <li className="page" key={index}>
+                <button className={`${currentIndex === index ? "page__btn page__btn--active" : "page__btn"}`} data-pagenum={index}>{index + 1}</button>
+              </li>
+            )
+          })}
         </ul>
         <button className="pages-section__next" onClick={nextUsers}>Next</button>
       </section>
@@ -129,38 +115,3 @@ function App() {
 }
 
 export default App;
-
-
-/*
-          <li className="page">
-            <button className="page__btn">1</button>
-          </li>
-          <li className="page">
-            <button className="page__btn">2</button>
-          </li>
-          <li className="page">
-            <button className="page__btn">3</button>
-          </li>
-          <li className="page">
-            <button className="page__btn">4</button>
-          </li>
-          <li className="page">
-            <button className="page__btn">5</button>
-          </li>
-          <li className="page">
-            <button className="page__btn">6</button>
-          </li>
-          <li className="page">
-            <button className="page__btn">7</button>
-          </li>
-          <li className="page">
-            <button className="page__btn">8</button>
-          </li>
-          <li className="page">
-            <button className="page__btn">9</button>
-          </li>
-          <li className="page">
-            <button className="page__btn">10</button>
-          </li>
-
-*/
