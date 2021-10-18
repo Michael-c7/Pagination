@@ -6,9 +6,7 @@ function App() {
 
   const [loading, setLoading] = useState(false);
   const [users, setUsers] = useState([]);
-  // start : 10, end : 100
   const [currentIndex, setCurrentIndex] = useState(0)
-  const [isActiveBtn, setIsActiveBtn] = useState(true)
 
 
   const fetchData = async _ => {
@@ -17,9 +15,8 @@ function App() {
     try {
       const response = await fetch(url);
       const data = await response.json()
-      // console.log(data.length / 10)
-      //
-      // let currentUsers = data.slice((currentIndex - 10), currentIndex);
+
+      // pagination
       const itemsPerPage = 10;
       const pages = Math.ceil(data.length / itemsPerPage);
 
